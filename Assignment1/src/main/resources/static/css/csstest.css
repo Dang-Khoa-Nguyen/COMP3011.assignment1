@@ -7,7 +7,7 @@ h1 {
  	margin-left: 20px;
 }
 
-div[name="button-record"] {
+#button-record {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -20,8 +20,11 @@ div[name="button-record"] {
 	font-size: larger;
 }
 
+.hidden {
+	display: none !important;
+}
 
-div[name="button-recording"] {
+#button-recording {
 	display: flex;
 	justify-content: center;
 	align-items: center;
