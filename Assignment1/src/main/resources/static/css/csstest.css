@@ -1,0 +1,50 @@
+body {
+  background-color: white;
+}
+
+h1 {
+	text-align: center;
+ 	margin-left: 20px;
+}
+
+div[name="button-record"] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: orangered;
+	width: 50%;
+	height: 50px;
+	border-radius: 10px;
+	border: 1px solid black;
+	color: floralwhite;
+	font-size: larger;
+}
+
+
+div[name="button-recording"] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	width: 50%;
+	height: 50px;
+	border-radius: 10px;
+	border: 1px solid black;
+	color: orangered;
+	font-size: larger;
+}
+
+div[name="red-circle"] {
+	width: 10px;
+	height: 10px;
+	background-color: orangered;
+	border-radius: 100%;
+	margin-right: 10px;
+}
+
+
+div[name="button-pos"] {
+	display: flex;
+	justify-content: center;
+}
+
