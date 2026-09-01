@@ -3,10 +3,16 @@
 	<head>
 	      <meta charset="UTF-8">
 	      <title> Voice Record </title>
-	    <link rel="stylesheet" type="text/css" href="css/csstest.css"/>
+	    <link rel="stylesheet" type="text/css" th:href="@{css/csstest.css}"/>
 	 </head>
 	<body> 
 		<h1> Voice Record  </h1> 
+		
+		<div class="container">
+			<div class="text-box">
+				<p> Hi This is from new things </p>
+			</div>
+		</div>
 		
 		<div name="button-pos">
 			<div  id="button-record" onclick="startRecording()"> Record </div>

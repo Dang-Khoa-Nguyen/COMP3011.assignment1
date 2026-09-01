@@ -1,5 +1,6 @@
 body {
-  background-color: white;
+  background-color: black;
+  color: whitesmoke;
 }
 
 h1 {
@@ -18,6 +19,23 @@ h1 {
 	border: 1px solid black;
 	color: floralwhite;
 	font-size: larger;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.text-box {
+	display: block ;
+	border: 1px solid darkslategray;
+	border-radius: 10px;
+	width: 50%;
+	height: 100px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 5px;
 }
 
 .hidden {
