@@ -1,4 +1,4 @@
-package comp3011.assignment;
+package comp3011.assignment.services;
 
 import java.io.IOException;
 import java.util.Map;
