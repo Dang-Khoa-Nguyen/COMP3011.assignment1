@@ -3,8 +3,6 @@ package comp3011.assignment.controllers;
 import java.time.Duration;
 import java.time.Instant;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import comp3011.assignment.Assignment1Application;
 import comp3011.assignment.components.schemas.ErrorResponse;
+import comp3011.assignment.components.schemas.ShutdownResponse;
+import comp3011.assignment.components.schemas.UptimeResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -24,23 +24,17 @@ public class AdminstrationController {
 	private final AtomicBoolean shuttingDown = new AtomicBoolean(false);
 			
     @GetMapping("/uptime")
-    public Map<String, Object> getUptime() {
+    public ResponseEntity<?> getUptime() {
     	
     	// Get the server start time and current start time.
         Instant start = Assignment1Application.SERVER_START_TIME;
         Instant now = Instant.now();
         
-        // Calculate the uptime
-        long uptimeSeconds = Duration.between(start, now).getSeconds();
-        
-        // Add the server start time, current start time and uptime seconds in response.
-        Map<String, Object> response = new HashMap<>();
-        response.put("serverStartUtc", start.toString());
-        response.put("currentUtc", now.toString());
-        response.put("uptimeSeconds", uptimeSeconds);
-        
-        System.out.print(response);
-        return response;
+        // Calculate the uptimeSeconds
+        double uptimeSeconds = Duration.between(start, now).getSeconds();
+ 
+        // Return the server start, current start and uptimeSeconds with 200 status
+        return ResponseEntity.accepted().body(new UptimeResponse(start.toString(), now.toString(), uptimeSeconds));
         
     }
     
