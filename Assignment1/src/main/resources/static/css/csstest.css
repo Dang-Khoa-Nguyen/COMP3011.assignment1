@@ -1,71 +1,134 @@
+* { box-sizing: border-box; }
+
 body {
-  background-color: black;
-  color: whitesmoke;
+    background-color: #0d0d0f;
+    color: whitesmoke;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.bold-heading {
+	font-weight: 500;
 }
 
 h1 {
-	text-align: center;
- 	margin-left: 20px;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-#button-record {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: orangered;
-	width: 50%;
-	height: 50px;
-	border-radius: 10px;
-	border: 1px solid black;
-	color: floralwhite;
-	font-size: larger;
+.intro {
+	text-align: center;
+	color: snow;
+	font-weight: 300;
+	font-size: x-large;
+	
 }
 
 .container {
-	display: flex;
-	justify-content: center;
-	width: 100%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .text-box {
-	display: block ;
-	border: 1px solid darkslategray;
-	border-radius: 10px;
-	width: 50%;
-	height: 100px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding-left: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border: 1px solid #2a2f33;
+    background-color: #16181c;
+    border-radius: 14px;
+    width: min(560px, 90%);
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.hidden {
-	display: none !important;
+/* Result area — grows with text instead of a fixed height */
+#result {
+    min-height: 80px;
+    padding: 14px;
+    border-radius: 10px;
+    background-color: #0d0d0f;
+    line-height: 1.5;
+    font-size: 1.05rem;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
-#button-recording {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: white;
-	width: 50%;
-	height: 50px;
-	border-radius: 10px;
-	border: 1px solid black;
-	color: orangered;
-	font-size: larger;
+/* Fake placeholder for an empty div */
+#result:empty::before {
+    content: attr(data-placeholder);
+    color: #6b7075;
+    font-style: italic;
 }
-
-div[name="red-circle"] {
-	width: 10px;
-	height: 10px;
-	background-color: orangered;
-	border-radius: 100%;
-	margin-right: 10px;
-}
-
 
 div[name="button-pos"] {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
+/* Shared button look */
+#button-record,
+#button-recording,
+#button-processing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 52px;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    user-select: none;
+    transition: transform 0.08s ease, background-color 0.2s ease;
+}
+
+#button-record {
+    background-color: orangered;
+    color: floralwhite;
+    cursor: pointer;
+}
+#button-record:hover { background-color: #ff5722; }
+#button-record:active { transform: scale(0.98); }
+
+#button-recording {
+    background-color: whitesmoke;
+    color: orangered;
+    cursor: pointer;
+}
+
+#button-processing {
+    background-color: #2a2f33;
+    color: #b8bcc0;
+    cursor: default;
+}
+
+.hidden { display: none !important; }
+
+/* Pulsing red dot while recording */
+div[name="red-circle"] {
+    width: 11px;
+    height: 11px;
+    background-color: orangered;
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: pulse 1s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Spinner while transcribing */
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #6b7075;
+    border-top-color: orangered;
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

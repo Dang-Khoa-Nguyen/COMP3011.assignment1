@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Transcription</title>
+    <link rel="stylesheet" type="text/css" href="css/csstest.css"/>
+</head>
+<body>
+    <h1>Voice Transcription</h1>
+	
+	<div class="intro"> Just <b class="bold-heading">one tap</b> to transcribe your discussion and meeting. </div>
+	
+    <div class="container">
+        <div class="text-box">
+            <div name="button-pos">
+                <div id="button-record" onclick="startRecording()"> Tap to record </div>
+                <div id="button-recording" class="hidden" onclick="stopRecording()">
+                    <div name="red-circle"></div>
+                    Recording… tap to stop
+                </div>
+                <div id="button-processing" class="hidden">
+                    <div class="spinner"></div>
+                    Transcribing…
+                </div>
+            </div>
+			
+			<div id="result" data-placeholder="Try to say something…"></div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+	// Get button id
+    const recordBtn = document.getElementById("button-record");
+    const recordingBtn = document.getElementById("button-recording");
+	
+	// hide record and show recording
+    async function startRecording() {
+		recordBtn.classList.add("hidden")     
+		recordingBtn.classList.remove("hidden");  
+
+    }
+	
+	// hide recording and show record
+    function stopRecording() {
+		recordBtn.classList.remove("hidden")      
+        recordingBtn.classList.add("hidden");    
+    }
+	
+</script>
