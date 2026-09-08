@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import comp3011.assignment.Assignment1Application;
+import comp3011.assignment.components.schemas.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
