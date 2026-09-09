@@ -24,22 +24,21 @@ public class AdminstrationController {
 	private final AtomicBoolean shuttingDown = new AtomicBoolean(false);
 			
     @GetMapping("/uptime")
-    public ResponseEntity<?> getUptime() {
+    public UptimeResponse getServerUptime() {
     	
     	// Get the server start time and current start time.
         Instant start = Assignment1Application.SERVER_START_TIME;
         Instant now = Instant.now();
         
-        // Calculate the uptimeSeconds
-        double uptimeSeconds = Duration.between(start, now).getSeconds();
+        // Calculate the uptimeSeconds and keep the fractional seconds.
+        double uptimeSeconds = Duration.between(start, now).toMillis() / 1000;
  
         // Return the server start, current start and uptimeSeconds with 200 status
-        return ResponseEntity.accepted().body(new UptimeResponse(start.toString(), now.toString(), uptimeSeconds));
-        
+        return new UptimeResponse(start.toString(), now.toString(), uptimeSeconds);   
     }
     
     @PostMapping("/shutdown")
-    public ResponseEntity<?> shutdownRequest(HttpServletRequest request) {
+    public ResponseEntity<?> shutdownServer(HttpServletRequest request) {
 
     	// Only the first shutdown request succeeds; later requests return 409.
         if (!shuttingDown.compareAndSet(false, true)) {

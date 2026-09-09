@@ -1,1 +1,8 @@
 /.metadata/
+
+target/
+.env
+application-local.properties
+.classpath
+.project
+.settings/
