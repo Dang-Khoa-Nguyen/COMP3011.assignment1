@@ -13,17 +13,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.client.RestClientResponseException;
 
+import comp3011.assignment.controllers.StatsHolder;
+
 @Service
 public class TranscriptionService {
 	private final RestClient client = RestClient.create();
     private final String apiKey;
+    private final StatsHolder stats;
 
     /* Injects the key from the OPENAI_API_KEY environment variable at startup.
      * 
      * @param apiKey the api key is injected from environment file 
      * */
-    public TranscriptionService(@Value("${OPENAI_API_KEY}") String apiKey) {
-        this.apiKey = apiKey;
+    public TranscriptionService(StatsHolder stats, @Value("${OPENAI_API_KEY}") String apiKey) {
+        this.stats = stats;
+    	this.apiKey = apiKey;
     }
     
     /* Transcribe from audio to text. 
@@ -56,6 +60,8 @@ public class TranscriptionService {
                 .body(body)
                 .retrieve()
                 .body(Map.class);
+            
+            stats.record(response);
             return response.get("text").toString();
         } catch (RestClientResponseException e) {
             // Prints OpenAI's real error to review, for example, bad key, bad model, file too big.
