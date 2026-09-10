@@ -5,6 +5,8 @@ import java.time.Instant;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +49,18 @@ public class AdminstrationController {
                 "Graceful shutdown is already in progress.", request.getRequestURI());
             return ResponseEntity.status(409).body(error);
         }
+        
+        // Create a thread to delay the system shuts down so the response 202 can reach the user.
+        new Thread(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            System.exit(0);
+        }).start();
 
+        
         // Return the message with 202 status
         return ResponseEntity.accepted().body(new ShutdownResponse("Graceful shutdown requested."));
     }
