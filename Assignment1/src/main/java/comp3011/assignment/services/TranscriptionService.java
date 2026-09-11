@@ -15,9 +15,14 @@ import comp3011.assignment.controllers.StatsHolder;
 
 import org.springframework.web.client.RestClientResponseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class TranscriptionService {
-	private final RestClient client = RestClient.create();
+	
+	private static final Logger log = LoggerFactory.getLogger(TranscriptionService.class);
+	private final RestClient client;
     private final String apiKey;
     private final StatsHolder stats;
 
@@ -25,13 +30,18 @@ public class TranscriptionService {
      * 
      * @param apiKey the api key is injected from environment file 
      * */
-    public TranscriptionService(StatsHolder stats, @Value("${OPENAI_API_KEY}") String apiKey) {
+    public TranscriptionService(RestClient.Builder builder, StatsHolder stats, @Value("${OPENAI_API_KEY}") String apiKey) {
     	// Ensure the apiKey is not empty.
     	if (apiKey == null || apiKey.isEmpty()) {
     		 throw new IllegalStateException("OPENAI_API_KEY is not set");
     	}
     	this.apiKey = apiKey;
         this.stats = stats;
+        
+        this.client = builder
+                .baseUrl("https://api.openai.com/v1")
+                .defaultHeader("Authorization", "Bearer " + apiKey)
+                .build();
     }
     
     /* Transcribe from audio to text. 
@@ -61,8 +71,7 @@ public class TranscriptionService {
         try {
         	// Parse into map get a text field
             var response = client.post()
-        		.uri("https://api.openai.com/v1/audio/transcriptions")
-                .header("Authorization", "Bearer " + apiKey)
+            	.uri("/audio/transcriptions")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
@@ -71,8 +80,7 @@ public class TranscriptionService {
             stats.record(response);
             return response.get("text").toString();
         } catch (RestClientResponseException e) {
-            // Prints OpenAI's real error to review, for example, bad key, bad model, file too big.
-            System.out.println("OpenAI said " + e.getStatusCode() + ": " + e.getResponseBodyAsString());
+        	log.error("API call failed with status {}", e.getStatusCode());
             throw e;
         }
     }
