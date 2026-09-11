@@ -11,9 +11,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.web.client.RestClientResponseException;
-
 import comp3011.assignment.controllers.StatsHolder;
+
+import org.springframework.web.client.RestClientResponseException;
 
 @Service
 public class TranscriptionService {
@@ -26,8 +26,12 @@ public class TranscriptionService {
      * @param apiKey the api key is injected from environment file 
      * */
     public TranscriptionService(StatsHolder stats, @Value("${OPENAI_API_KEY}") String apiKey) {
-        this.stats = stats;
+    	// Ensure the apiKey is not empty.
+    	if (apiKey == null || apiKey.isEmpty()) {
+    		 throw new IllegalStateException("OPENAI_API_KEY is not set");
+    	}
     	this.apiKey = apiKey;
+        this.stats = stats;
     }
     
     /* Transcribe from audio to text. 
@@ -41,9 +45,12 @@ public class TranscriptionService {
      * */
     public String transcribe(MultipartFile file) throws IOException {
     	
-    	// OpenAI guesses the format from the extension, so give the raw bytes a ".webm" name.
+    	// OpenAI guesses the format from the extension.
         var audioPart = new ByteArrayResource(file.getBytes()) {
-            @Override public String getFilename() { return "audio.webm"; }
+            @Override 
+            public String getFilename() { 
+            	return "audio.webm"; 
+            }
         };
         
         // Create the multipart/form-data for the OpenAI's transcription.
@@ -54,7 +61,7 @@ public class TranscriptionService {
         try {
         	// Parse into map get a text field
             var response = client.post()
-                .uri("https://api.openai.com/v1/audio/transcriptions")
+        		.uri("https://api.openai.com/v1/audio/transcriptions")
                 .header("Authorization", "Bearer " + apiKey)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
