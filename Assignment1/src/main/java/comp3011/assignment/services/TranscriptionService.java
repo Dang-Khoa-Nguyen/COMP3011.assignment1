@@ -11,8 +11,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
-import comp3011.assignment.controllers.StatsHolder;
-
 import org.springframework.web.client.RestClientResponseException;
 
 import org.slf4j.Logger;
@@ -24,19 +22,19 @@ public class TranscriptionService {
 	private static final Logger log = LoggerFactory.getLogger(TranscriptionService.class);
 	private final RestClient client;
     private final String apiKey;
-    private final StatsHolder stats;
+    private final TokenCounterService tokenCounterService;
 
     /* Injects the key from the OPENAI_API_KEY environment variable at startup.
      * 
      * @param apiKey the api key is injected from environment file 
      * */
-    public TranscriptionService(RestClient.Builder builder, StatsHolder stats, @Value("${OPENAI_API_KEY}") String apiKey) {
+    public TranscriptionService(RestClient.Builder builder, TokenCounterService tokenCounterService, @Value("${OPENAI_API_KEY}") String apiKey) {
     	// Ensure the apiKey is not empty.
     	if (apiKey == null || apiKey.isEmpty()) {
     		 throw new IllegalStateException("OPENAI_API_KEY is not set");
     	}
     	this.apiKey = apiKey;
-        this.stats = stats;
+        this.tokenCounterService = tokenCounterService;
         
         this.client = builder
                 .baseUrl("https://api.openai.com/v1")
@@ -77,7 +75,7 @@ public class TranscriptionService {
                 .retrieve()
                 .body(Map.class);
             
-            stats.record(response);
+            tokenCounterService.record(response);
             return response.get("text").toString();
         } catch (RestClientResponseException e) {
         	log.error("API call failed with status {}", e.getStatusCode());
