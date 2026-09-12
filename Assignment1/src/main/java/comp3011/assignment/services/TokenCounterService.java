@@ -14,7 +14,19 @@ public class TokenCounterService {
 	// LongAdder handles concurrent updates safely under heavy load.
     private final LongAdder inputTokens = new LongAdder();
     private final LongAdder outputTokens = new LongAdder();
-
+    
+    /**
+     * Assertions
+     * */
+    
+    public long getInput() {
+    	return inputTokens.sum();
+    }
+    
+    public long getOutput() {
+    	return outputTokens.sum();
+    }
+    
     /*
      * Adds the token counts from a transcription response.
      */
