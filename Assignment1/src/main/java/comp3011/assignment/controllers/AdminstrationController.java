@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/api/v1/admin")
 public class AdminstrationController {
 	
+	private final ApplicationContext context;
 	private final AtomicBoolean shuttingDown = new AtomicBoolean(false);
-			
+	
+	public AdminstrationController(ApplicationContext context) {
+	    this.context = context;
+	}
+	
     @GetMapping("/uptime")
     public UptimeResponse getServerUptime() {
     	
@@ -33,7 +39,7 @@ public class AdminstrationController {
         Instant now = Instant.now();
         
         // Calculate the uptimeSeconds and keep the fractional seconds.
-        double uptimeSeconds = Duration.between(start, now).toMillis() / 1000;
+        double uptimeSeconds = Duration.between(start, now).toMillis() / 1000.0;
  
         // Return the server start, current start and uptimeSeconds with 200 status
         return new UptimeResponse(start.toString(), now.toString(), uptimeSeconds);   
@@ -57,7 +63,7 @@ public class AdminstrationController {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            System.exit(0);
+			((ConfigurableApplicationContext) context).close();
         }).start();
 
         
