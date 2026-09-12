@@ -1,10 +1,11 @@
-package comp3011.assignment.components.responses;
+package comp3011.assignment.components.exceptions;
 
 import java.time.Instant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import comp3011.assignment.components.schemas.ErrorResponse;
+
+import comp3011.assignment.components.responses.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 // Catches any unhandled exception and returns the 500 ErrorResponse shape.

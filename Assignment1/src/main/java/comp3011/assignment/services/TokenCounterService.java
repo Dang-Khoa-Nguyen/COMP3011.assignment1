@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.LongAdder;
 
 import org.springframework.stereotype.Service;
 
-import comp3011.assignment.components.schemas.GlobalStatsResponse;
+import comp3011.assignment.components.responses.GlobalStatsResponse;
 
 @Service
 public class TokenCounterService {

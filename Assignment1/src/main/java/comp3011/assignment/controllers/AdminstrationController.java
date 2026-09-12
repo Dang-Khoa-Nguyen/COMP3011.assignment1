@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import comp3011.assignment.Assignment1Application;
-import comp3011.assignment.components.schemas.ErrorResponse;
-import comp3011.assignment.components.schemas.ShutdownResponse;
-import comp3011.assignment.components.schemas.UptimeResponse;
+import comp3011.assignment.components.responses.ErrorResponse;
+import comp3011.assignment.components.responses.ShutdownResponse;
+import comp3011.assignment.components.responses.UptimeResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
