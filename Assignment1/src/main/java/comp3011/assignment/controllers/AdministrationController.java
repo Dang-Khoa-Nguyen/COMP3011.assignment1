@@ -5,9 +5,6 @@ import java.time.Instant;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import comp3011.assignment.Assignment1Application;
+import comp3011.assignment.components.ApplicationTerminator;
 import comp3011.assignment.components.responses.ErrorResponse;
 import comp3011.assignment.components.responses.ShutdownResponse;
 import comp3011.assignment.components.responses.UptimeResponse;
@@ -22,14 +20,14 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/admin")
-public class AdminstrationController {
+public class AdministrationController {
 	
-	private final ApplicationContext context;
+	private final ApplicationTerminator terminator;
 	private final AtomicBoolean shuttingDown = new AtomicBoolean(false);
 	
-	public AdminstrationController(ApplicationContext context) {
-	    this.context = context;
-	}
+	public AdministrationController(ApplicationTerminator terminator) {
+        this.terminator = terminator;
+    }
 	
     @GetMapping("/uptime")
     public UptimeResponse getServerUptime() {
@@ -56,16 +54,7 @@ public class AdminstrationController {
             return ResponseEntity.status(409).body(error);
         }
         
-        // Create a thread to delay the system shuts down so the response 202 can reach the user.
-        new Thread(() -> {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-			((ConfigurableApplicationContext) context).close();
-        }).start();
-
+        terminator.terminate();
         
         // Return the message with 202 status
         return ResponseEntity.accepted().body(new ShutdownResponse("Graceful shutdown requested."));

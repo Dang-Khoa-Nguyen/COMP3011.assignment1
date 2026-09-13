@@ -7,15 +7,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import comp3011.assignment.controllers.AdminstrationController;
+import comp3011.assignment.components.ApplicationTerminator;
+import comp3011.assignment.controllers.AdministrationController;
 
-@WebMvcTest(AdminstrationController.class)
+@WebMvcTest(AdministrationController.class)
+@DirtiesContext
 public class ShutdownTest {
 
 	 	@Autowired
 	    private MockMvc mockMvc;
+	 	
+	 	 // To avoid a mock having a real shutdown.
+	 	 @MockitoBean
+	     private ApplicationTerminator terminator;
 
 	    /**
 	     * Verifies the shutdown endpoint's error handling

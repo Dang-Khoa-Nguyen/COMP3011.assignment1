@@ -8,15 +8,21 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import comp3011.assignment.controllers.AdminstrationController;
+import comp3011.assignment.components.ApplicationTerminator;
+import comp3011.assignment.controllers.AdministrationController;
 
-@WebMvcTest(AdminstrationController.class)
-class UptimeTest {
+@WebMvcTest(AdministrationController.class)
+public class UpTimeTest {
 
     @Autowired
     private MockMvc mockMvc;
+    
+    // To avoid a mock having a real shutdown.
+    @MockitoBean
+    private ApplicationTerminator terminator;
 
     /**
      * Verifies /api/v1/admin/uptime endpoint returns 200 with the three fields that the YAML requires
