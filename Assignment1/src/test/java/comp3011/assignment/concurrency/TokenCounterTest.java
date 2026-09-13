@@ -1,4 +1,4 @@
-package comp3011.assignment;
+package comp3011.assignment.concurrency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Map;

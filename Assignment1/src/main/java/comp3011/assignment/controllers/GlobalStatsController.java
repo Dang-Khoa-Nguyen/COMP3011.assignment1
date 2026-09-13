@@ -12,8 +12,12 @@ import comp3011.assignment.services.TokenCounterService;
 @RequestMapping("/api/v1/global")
 public class GlobalStatsController {
 
-	private final TokenCounterService tokenCounterService = new TokenCounterService();
-
+	private final TokenCounterService tokenCounterService;
+	
+	public GlobalStatsController(TokenCounterService tokenCounterService) {
+        this.tokenCounterService = tokenCounterService;
+    }
+	
     @GetMapping("/stats")
     public ResponseEntity<GlobalStatsResponse> getGlobalStats() {
         return ResponseEntity.status(200).body(tokenCounterService.getStats());
