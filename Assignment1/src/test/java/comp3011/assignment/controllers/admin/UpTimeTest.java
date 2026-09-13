@@ -1,4 +1,4 @@
-package comp3011.assignment.admin;
+package comp3011.assignment.controllers.admin;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
