@@ -30,7 +30,7 @@ public class TranscriptionControllerTest {
     TranscriptionService transcriptionService;
     
     @Test
-    @DisplayName("POST the transcribe endpoint and return the correct 200 shape")
+    @DisplayName("POST the transcribe endpoint and return the correct 200 shape, meaning the transcription works well")
     void transcriptionReturn200Shape() throws Exception{
     	when(transcriptionService.transcribe(any())).thenReturn("This meeting is really important");
     	var file = new MockMultipartFile("file", "a.webm", "audio/webm", "fake audio".getBytes());
@@ -40,13 +40,27 @@ public class TranscriptionControllerTest {
     }
     
     @Test
-    @DisplayName("POST the transcribe endpoint and return the correct 500 shape")
+    @DisplayName("POST the transcribe endpoint and return the correct 400 shape, meaining the file is missing")
+    void transcriptionReturn400shape() throws Exception{
+    	when(transcriptionService.transcribe(any())).thenThrow(new RuntimeException("Bad Request"));
+    	mockMvc.perform(multipart("/api/v1/transcribe"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Bad Request"))
+        .andExpect(jsonPath("$.message").value("A 'file' part is required."))
+        .andExpect(jsonPath("$.path").value("/api/v1/transcribe"));
+    }
+    
+    @Test
+    @DisplayName("POST the transcribe endpoint and return the correct 500 shape, meaning the transcription has errors.")
     void transcriptionReturn500shape() throws Exception{
-    	when(transcriptionService.transcribe(any())).thenThrow(new RuntimeException("Error!!"));
+    	when(transcriptionService.transcribe(any())).thenThrow(new RuntimeException("Internal Server Error"));
     	var file = new MockMultipartFile("file", "a.webm", "audio/webm", "fake audio".getBytes());
     	mockMvc.perform(multipart("/api/v1/transcribe").file(file))
         .andExpect(status().isInternalServerError())
         .andExpect(jsonPath("$.status").value(500))
+        .andExpect(jsonPath("$.error").value("Internal Server Error"))
+        .andExpect(jsonPath("$.message").value("An unexpected server error occurred."))
         .andExpect(jsonPath("$.path").value("/api/v1/transcribe"));
     }
     

@@ -61,16 +61,32 @@ async function sendAudio() {
 		
 		// Fetch the /transcribe endpoint and send the audio to the endpoint.
 		const res = await fetch('/api/v1/transcribe', { method: 'POST', body: form });
+		
+		// If the status is not ok, throws error and message depending on the status to let user know 
+		// what errors they are facing.
+		if (!res.ok) {
+           let message;
+           switch (res.status) {
+               case 400: 
+				   message = "No audio was received. Please record first."; 
+				   break;
+               case 413: 
+					message = "That recording is too large. Try a shorter clip."; 
+					break;
+               default:  
+			   		message = "Transcription failed on the server. Please try again."; 
+					break;
+           }
+           document.getElementById('result-error').textContent = message;
+		   errorMessage.classList.remove("hidden");
+           return;
+       }
+
 		const data = await res.json();
-		
-		// If the status is 500, throws error to catch.
-		if (!res.ok) {                                 
-		    throw new Error("Server error " + res.status);  
-		}
-		
 		document.getElementById('result').textContent = data.text; 
+		
 	  } catch(e) {
-		document.getElementById('result-error').textContent = "Sorry, could not transcribe the audio. Please try again";
+		document.getElementById('result-error').textContent = "Could not reach the server. Check your connection and try again.";
 		errorMessage.classList.remove("hidden");
 	  } finally {
 		processingBtn.classList.add("hidden");
