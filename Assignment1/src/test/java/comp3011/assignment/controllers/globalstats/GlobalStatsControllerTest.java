@@ -27,8 +27,8 @@ class GlobalStatsControllerTest {
     TokenCounterService tokenCounterService;
 
     @Test
-    @DisplayName("GET the global/stats endpoint and return the correct shape")
-    void statsReturnsCorrectShape() throws Exception {
+    @DisplayName("GET the global/stats endpoint and return the 200 shape with correct input and output tokens")
+    void statsReturns200ShapeWithCorrectTokens() throws Exception {
         when(tokenCounterService.getStats())
             .thenReturn(new GlobalStatsResponse(100, 20));
         mockMvc.perform(get("/api/v1/global/stats"))

@@ -11,7 +11,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import comp3011.assignment.components.ApplicationTerminator;
+import comp3011.assignment.components.shutdown.ApplicationTerminator;
 import comp3011.assignment.controllers.AdministrationController;
 
 @WebMvcTest(AdministrationController.class)
@@ -32,7 +32,7 @@ public class UpTimeTest {
      * the up time seconds must be greater or equal to 0.0
      */
     @Test
-    void uptimeReturnsCorrectShape() throws Exception {
+    void uptimeReturns200Shape() throws Exception {
         mockMvc.perform(get("/api/v1/admin/uptime"))
                .andExpect(status().isOk())                                  
                .andExpect(jsonPath("$.utcServerStart").exists())  

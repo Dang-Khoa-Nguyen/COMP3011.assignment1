@@ -11,7 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import comp3011.assignment.components.ApplicationTerminator;
+import comp3011.assignment.components.shutdown.ApplicationTerminator;
 import comp3011.assignment.controllers.AdministrationController;
 
 @WebMvcTest(AdministrationController.class)

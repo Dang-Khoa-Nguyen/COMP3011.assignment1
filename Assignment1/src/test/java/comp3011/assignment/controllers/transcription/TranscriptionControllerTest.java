@@ -41,7 +41,7 @@ public class TranscriptionControllerTest {
     
     @Test
     @DisplayName("POST the transcribe endpoint and return the correct 400 shape, meaining the file is missing")
-    void transcriptionReturn400shape() throws Exception{
+    void transcriptionReturn400Shape() throws Exception{
     	when(transcriptionService.transcribe(any())).thenThrow(new RuntimeException("Bad Request"));
     	mockMvc.perform(multipart("/api/v1/transcribe"))
         .andExpect(status().isBadRequest())
@@ -53,7 +53,7 @@ public class TranscriptionControllerTest {
     
     @Test
     @DisplayName("POST the transcribe endpoint and return the correct 500 shape, meaning the transcription has errors.")
-    void transcriptionReturn500shape() throws Exception{
+    void transcriptionReturn500Shape() throws Exception{
     	when(transcriptionService.transcribe(any())).thenThrow(new RuntimeException("Internal Server Error"));
     	var file = new MockMultipartFile("file", "a.webm", "audio/webm", "fake audio".getBytes());
     	mockMvc.perform(multipart("/api/v1/transcribe").file(file))

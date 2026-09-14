@@ -1,4 +1,4 @@
-package comp3011.assignment.components;
+package comp3011.assignment.components.shutdown;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
