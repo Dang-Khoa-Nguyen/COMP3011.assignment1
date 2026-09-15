@@ -1,6 +1,6 @@
 # TESTING
-All tests run on every build and guard against breaking existing behaviour, with 10 tests in total.
-Tests that would call OpenAI use a stub, so they are fast, free, and need no API key.
+All tests run on every build and guard against breaking existing behaviour,There are 9 tests below, plus Spring Boot's auto-generated context-load test
+(10 in total when running `./mvnw test`). Tests that would call OpenAI use a stub, so they are fast, free, and need no API key.
 
 ## Running the tests
 ```bash
