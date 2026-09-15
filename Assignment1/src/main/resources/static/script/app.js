@@ -14,7 +14,11 @@ const processingBtn = document.getElementById("processing");
 async function startRecording() {
 	try {
 		const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-		recorder = new MediaRecorder(stream);
+		
+		recorder = new MediaRecorder(stream, {
+            audioBitsPerSecond: 16000
+        });
+
 		chunks = [];
 
 		// collect audio as it arrives
@@ -35,7 +39,7 @@ async function startRecording() {
 }
 
 /*
-* Stop the recording (hide recording button and show record button)
+* Stop the recording (hide recording button and show record button
 */
 function stopRecording() {
 	recorder.stop();
