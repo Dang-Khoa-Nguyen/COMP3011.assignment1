@@ -36,8 +36,8 @@ public class AdministrationController {
         Instant start = Assignment1Application.SERVER_START_TIME;
         Instant now = Instant.now();
         
-        // Calculate the uptimeSeconds and keep the fractional seconds.
-        double uptimeSeconds = Duration.between(start, now).toMillis() / 1000.0;
+        // Uptime in seconds, from nanoseconds so the first call is never exactly 0.
+        double uptimeSeconds = Duration.between(start, now).toNanos() / 1_000_000_000.0;
  
         // Return the server start, current start and uptimeSeconds with 200 status
         return new UptimeResponse(start.toString(), now.toString(), uptimeSeconds);   
